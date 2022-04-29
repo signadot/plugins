@@ -1,0 +1,19 @@
+apiVersion: signadot.com/v1
+kind: SignadotResourcePlugin
+metadata:
+  name: sd-echo-plugin
+spec:
+  description: |
+    Echo plugin is a plugin that echoes its inputs to its outputs to
+    test the I/O mechanism associated with plugin provisioners.
+  execPod:
+    template:
+      metadata:
+        namespace: {{ .Values.execpodNamespace }}
+      spec:
+        containers:
+        - image: signadot/echo-plugin:latest
+          imagePullPolicy: Always
+          name: echo-plugin
+          resources: {}
+  type: ExecPod
