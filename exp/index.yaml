@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  amazon-sqs:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2022-04-29T19:36:33.877105406Z"
+    description: A Signadot Resource Plugin for provisioning queues in Amazon SQS.
+    digest: 1b9f89288fbec96713f20d6b6a5db036ae8d10c6be7ac7142d90eb358f978eb1
+    name: amazon-sqs
+    type: application
+    urls:
+    - https://github.com/signadot/plugins/releases/download/amazon-sqs-0.1.0/amazon-sqs-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-04-29T19:36:33.877109806Z"
