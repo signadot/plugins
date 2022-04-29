@@ -1,0 +1,34 @@
+apiVersion: signadot.com/v1
+kind: SignadotResourcePlugin
+metadata:
+  name: amazon-sqs
+spec:
+  description: |
+    Provision a temporary queue in Amazon SQS for use within a sandbox.
+
+    Each sandbox resource request must specify a 'region' parameter,
+    indicating the AWS region in which to provision the queue (e.g. us-east-1).
+
+    Each sandbox resource request can optionally specify 'attributes' and 'tags'
+    that will be passed to the corresponding flags in the 'aws sqs create-queue'
+    command: https://docs.aws.amazon.com/cli/latest/reference/sqs/create-queue.html
+
+    The temporary queue name will be available as the output key 'queue-name',
+    and the queue URL will be available as the key 'queue-url'.
+  type: ExecPod
+  execPod:
+    template:
+      metadata:
+        namespace: signadot
+      spec:
+        containers:
+        - image: {{ .Values.image | quote }}
+          imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
+          name: plugin
+          volumeMounts:
+          - name: aws-auth
+            mountPath: /root/.aws
+        volumes:
+        - name: aws-auth
+          secret:
+            secretName: {{ .Values.awsAuthSecret | quote }}
