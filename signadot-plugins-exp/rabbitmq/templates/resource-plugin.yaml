@@ -1,0 +1,36 @@
+apiVersion: signadot.com/v1
+kind: SignadotResourcePlugin
+metadata:
+  name: sd-rabbitmq
+spec:
+  description: |
+    Provision a temporary vhost in rabbitmq services for use with a sandbox.
+
+    Parameters:
+      - refvhost: the name of the vhost to use as a reference.
+      - users: comma separated list of usernames which will access the new
+        vhost.
+
+    Outputs:
+      - vhost-name: the name of the newly provisioned rabbit mq vhost.
+
+  type: ExecPod
+  execPod:
+    template:
+      metadata:
+        namespace: {{ .Release.Namespace | quote }}
+      spec:
+        containers:
+        - image: {{ .Values.image | quote }}
+          imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
+          name: rabbitmq
+          env:
+          - name: NAMESPACE
+            value: {{ .Release.Namespace | quote }}
+          volumeMounts:
+          - name: rabbitmq-auth
+            mountPath: /rabbitmq-auth
+        volumes:
+        - name: rabbitmq-auth
+          secret:
+            secretName: {{ .Values.rabbitAuthSecret | quote }}
