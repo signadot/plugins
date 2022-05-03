@@ -14,6 +14,9 @@ the `signadot` namespace containing a `credentials` file in the format that the
 kubectl -n signadot create secret generic aws-auth --from-file=credentials
 ```
 
+See the [AWS CLI docs](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-settings)
+for more details on the `credentials` file format.
+
 Make sure the target Kubernetes cluster already has Signadot Operator installed,
 and then install this chart into the operator's namespace with Helm:
 
