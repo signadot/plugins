@@ -63,7 +63,7 @@ Value | Description | Default
 ----- | ----------- | -------
 `image` | The container image URL for the plugin | `signadot/rabbitmq-plugin:{version}`
 `imagePullPolicy` | The image pull policy for the plugin | `IfNotPresent`
-`rabbitAuthSecret` | The name of the Secret object in the `signadot` namespace containing the secrets described above.
+`rabbitAuthSecret` | The name of the Secret object in the `signadot` namespace containing the secrets described above. | 
 
 ## Using the Plugin
 
