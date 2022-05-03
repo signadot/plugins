@@ -22,7 +22,3 @@ release-chart:
 	cp -r helm/* $(CHART_ROOT)/$(NAME)/
 	cp -r helm/.helmignore $(CHART_ROOT)/$(NAME)/
 
-helm-chart:
-	rm -rf ../../signadot-plugins-exp/rabbitmq
-	mkdir ../../signadot-plugins-exp/rabbitmq
-	cp -r helm/* ../../signadot-plugins-exp/rabbitmq/
