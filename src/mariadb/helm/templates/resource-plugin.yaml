@@ -18,7 +18,7 @@ spec:
       spec:
         serviceAccountName: {{ .Values.serviceAccountName | quote }}
         containers:
-        - image: {{ .Values.Image | quote }}
+        - image: {{ .Values.image | quote }}
           imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
           name: plugin
           env:
