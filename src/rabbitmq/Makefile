@@ -5,9 +5,7 @@ CHART_ROOT ?= ../../signadot-plugins-exp
 
 IMAGE ?= signadot/$(NAME)-plugin
 IMAGE_TAG ?= latest
-#PLATFORMS ?= linux/amd64,linux/arm64
-# apt-get jq fails on linux/arm64 under the rabbitmq docker image
-PLATFORMS ?= linux/amd64
+PLATFORMS ?= linux/amd64,linux/arm64
 
 build-image:
 	# Build for the local platform only.
