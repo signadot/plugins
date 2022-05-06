@@ -31,4 +31,15 @@ entries:
     urls:
     - https://github.com/signadot/plugins/releases/download/amazon-sqs-0.1.0/amazon-sqs-0.1.0.tgz
     version: 0.1.0
-generated: "2022-05-03T15:46:08.636846077Z"
+  rabbitmq:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2022-05-06T16:22:51.908438555Z"
+    description: A Signadot Resource Plugin for provisioning vhosts with RabbitMQ
+    digest: 39d4528b793009a37e9eff6c68a7f3b433d399175ce450cd87053e700608418d
+    name: rabbitmq
+    type: application
+    urls:
+    - https://github.com/signadot/plugins/releases/download/rabbitmq-0.1.0/rabbitmq-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-05-06T16:22:51.908628453Z"
