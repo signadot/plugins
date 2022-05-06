@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+set -e
+
+INPUT_DIR="${INPUT_DIR:-/signadot/provision/input}"
+OUTPUT_DIR="${OUTPUT_DIR:-/signadot/provision/output}"
+SECRET_DIR="${SECRET_DIR:-/rabbitmq-auth}"
+
+if [ $# -ne 2 ]; then
+  echo "usage: provision <sandbox-id> <resource-name>"
+  exit 1
+fi
+
+# Get values passed to us by Signadot Operator.
+# These tell us which resource name in which Sandbox we should provision.
+SANDBOX_ID=$1
+RESOURCE_NAME=$2
+
+echo "sandbox id: ${SANDBOX_ID}"
+echo "resource name: ${RESOURCE_NAME}"
+
+#
+# Get values passed to us as "params" in the Sandbox's "resources" section.
+#
+REF_VHOST=$(cat "${INPUT_DIR}/refvhost")
+USERS=$(cat "${INPUT_DIR}/users" | tr "," "\n")
+
+#
+# Get the values provided to the plugin for secret access to 
+# setup rabbitmq vhosts
+#
+RABBIT_SVC_NS=$(cat "${SECRET_DIR}/svc-namespace")
+RABBIT_SVC_NAME=$(cat "${SECRET_DIR}/svc-name")
+RABBIT_USERNAME=$(cat "${SECRET_DIR}/username")
+RABBIT_PASSWORD=$(cat "${SECRET_DIR}/password")
+
+
+HOSTNAME=${RABBIT_SVC_NAME}.${RABBIT_SVC_NS}.svc
+# uncomment to test on localhost with port-forwarding
+#HOSTNAME=localhost
+
+# Choose a vhost name that is unique to this sandbox.
+VHOST_NAME="/sd-${RESOURCE_NAME}-${SANDBOX_ID}"
+echo "Creating vhost: ${VHOST_NAME}"
+
+rabbitmqadmin --host=${HOSTNAME} \
+	--port=15672 \
+	--username=${RABBIT_USERNAME} \
+	--password=${RABBIT_PASSWORD} \
+	declare vhost name=$VHOST_NAME
+
+COMMON_ARGS="-f raw_json --host=${HOSTNAME} --port=15672 --username=${RABBIT_USERNAME} --password=${RABBIT_PASSWORD}"
+
+for user in $USERS; do
+	r=$(rabbitmqadmin ${COMMON_ARGS} list permissions | jq -r '.[] | select(.vhost=="'"${REF_VHOST}"'" and .user=="'"${user}"'") | .read')
+	w=$(rabbitmqadmin ${COMMON_ARGS} list permissions | jq -r '.[] | select(.vhost=="'"${REF_VHOST}"'" and .user=="'"${user}"'") | .write')
+	c=$(rabbitmqadmin ${COMMON_ARGS} list permissions | jq -r '.[] | select(.vhost=="'"${REF_VHOST}"'" and .user=="'"${user}"'") | .configure')
+	rabbitmqadmin --host=${HOSTNAME} \
+		--port=15672 \
+		--username=${RABBIT_USERNAME} \
+		--password=${RABBIT_PASSWORD} \
+		declare permission vhost=${VHOST_NAME} user=${user} \
+		"read=$r" "write=$w" "configure=$c"
+	echo "configured user ${user} read=$r write=$w configure=$c"
+done
+
+echo ${VHOST_NAME} > ${OUTPUT_DIR}/vhost-name
+echo "done"
+

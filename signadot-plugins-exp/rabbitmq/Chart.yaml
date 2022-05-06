@@ -1,0 +1,6 @@
+apiVersion: v2
+name: rabbitmq
+description: A Signadot Resource Plugin for provisioning vhosts with RabbitMQ
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
