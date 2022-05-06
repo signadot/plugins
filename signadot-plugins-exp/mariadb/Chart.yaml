@@ -1,5 +1,5 @@
 apiVersion: v2
-name: amazon-sqs
+name: mariadb
 description: A Signadot Resource Plugin for provisioning queues in Amazon SQS.
 type: application
 version: 0.1.2
