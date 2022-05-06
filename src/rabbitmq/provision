@@ -40,7 +40,7 @@ HOSTNAME=${RABBIT_SVC_NAME}.${RABBIT_SVC_NS}.svc
 # HOSTNAME=localhost
 
 # Choose a vhost name that is unique to this sandbox.
-VHOST_NAME="/sd-${RESOURCE_NAME}-${SANDBOX_ID}"
+VHOST_NAME="/sd-${RESOURCE_NAME,,}-${SANDBOX_ID}"
 echo "Creating vhost: ${VHOST_NAME}"
 
 rabbitmqadmin --host=${HOSTNAME} \
