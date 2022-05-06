@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -e
 
@@ -22,7 +22,7 @@ echo "resource name: ${RESOURCE_NAME}"
 #
 # Get values passed to us as "params" in the Sandbox's "resources" section.
 #
-REFVHOST=$(cat "${INPUT_DIR}/refvhost")
+REF_VHOST=$(cat "${INPUT_DIR}/refvhost")
 USERS=$(cat "${INPUT_DIR}/users" | tr "," "\n")
 
 #
@@ -37,10 +37,10 @@ RABBIT_PASSWORD=$(cat "${SECRET_DIR}/password")
 
 HOSTNAME=${RABBIT_SVC_NAME}.${RABBIT_SVC_NS}.svc
 # uncomment to test on localhost with port-forwarding
-# HOSTNAME=localhost
+#HOSTNAME=localhost
 
 # Choose a vhost name that is unique to this sandbox.
-VHOST_NAME="/sd-${RESOURCE_NAME,,}-${SANDBOX_ID}"
+VHOST_NAME="/sd-${RESOURCE_NAME}-${SANDBOX_ID}"
 echo "Creating vhost: ${VHOST_NAME}"
 
 rabbitmqadmin --host=${HOSTNAME} \
@@ -49,14 +49,19 @@ rabbitmqadmin --host=${HOSTNAME} \
 	--password=${RABBIT_PASSWORD} \
 	declare vhost name=$VHOST_NAME
 
+COMMON_ARGS="-f raw_json --host=${HOSTNAME} --port=15672 --username=${RABBIT_USERNAME} --password=${RABBIT_PASSWORD}"
+
 for user in $USERS; do
-	echo "setting up user ${user} for ${VHOST_NAME}"
+	r=$(rabbitmqadmin ${COMMON_ARGS} list permissions | jq -r '.[] | select(.vhost=="'"${REF_VHOST}"'" and .user=="'"${user}"'") | .read')
+	w=$(rabbitmqadmin ${COMMON_ARGS} list permissions | jq -r '.[] | select(.vhost=="'"${REF_VHOST}"'" and .user=="'"${user}"'") | .write')
+	c=$(rabbitmqadmin ${COMMON_ARGS} list permissions | jq -r '.[] | select(.vhost=="'"${REF_VHOST}"'" and .user=="'"${user}"'") | .configure')
 	rabbitmqadmin --host=${HOSTNAME} \
 		--port=15672 \
 		--username=${RABBIT_USERNAME} \
 		--password=${RABBIT_PASSWORD} \
 		declare permission vhost=${VHOST_NAME} user=${user} \
-		read=".*" write=".*" configure=".*"
+		"read=$r" "write=$w" "configure=$c"
+	echo "configured user ${user} read=$r write=$w configure=$c"
 done
 
 echo ${VHOST_NAME} > ${OUTPUT_DIR}/vhost-name
