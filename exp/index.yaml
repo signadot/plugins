@@ -31,6 +31,17 @@ entries:
     urls:
     - https://github.com/signadot/plugins/releases/download/amazon-sqs-0.1.0/amazon-sqs-0.1.0.tgz
     version: 0.1.0
+  mariadb:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2022-05-10T18:03:42.47270344Z"
+    description: A Signadot Resource Plugin for provisioning MariaDB databases.
+    digest: 05c10430f21509ad6809c7c9e215c16d25b358355f3800ee4c24eddd401252c1
+    name: mariadb
+    type: application
+    urls:
+    - https://github.com/signadot/plugins/releases/download/mariadb-0.1.0/mariadb-0.1.0.tgz
+    version: 0.1.0
   rabbitmq:
   - apiVersion: v2
     appVersion: 0.1.0
@@ -42,4 +53,4 @@ entries:
     urls:
     - https://github.com/signadot/plugins/releases/download/rabbitmq-0.1.0/rabbitmq-0.1.0.tgz
     version: 0.1.0
-generated: "2022-05-06T16:22:51.908628453Z"
+generated: "2022-05-10T18:03:42.47271564Z"
