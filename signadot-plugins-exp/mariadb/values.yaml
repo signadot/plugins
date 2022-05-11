@@ -1,0 +1,3 @@
+image: signadot/mariadb-plugin:v0.1.0
+imagePullPolicy: IfNotPresent
+serviceAccountName: sd-mariadb
