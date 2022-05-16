@@ -37,7 +37,7 @@ if [[ -e "${INPUT_DIR}/tags" ]]; then
 fi
 
 # Choose a queue name that's unique to this resource in this sandbox.
-QUEUE_NAME="signadot-${SANDBOX_ID}-${RESOURCE_NAME}"
+QUEUE_NAME="signadot-${RESOURCE_NAME}-${SANDBOX_ID}"
 echo "Creating queue: ${QUEUE_NAME}"
 
 # Create the queue. Capture the JSON output.
