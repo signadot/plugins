@@ -2,8 +2,8 @@
 
 set -e
 
-INPUT_DIR="${INPUT_DIR:-/signadot/provision/input}"
-OUTPUT_DIR="${OUTPUT_DIR:-/signadot/provision/output}"
+INPUT_DIR="${INPUT_DIR:-/signadot/plugin/input}"
+OUTPUT_DIR="${OUTPUT_DIR:-/signadot/plugin/output}"
 SECRET_DIR="${SECRET_DIR:-/rabbitmq-auth}"
 
 if [ $# -ne 2 ]; then
@@ -66,4 +66,3 @@ done
 
 echo ${VHOST_NAME} > ${OUTPUT_DIR}/vhost-name
 echo "done"
-

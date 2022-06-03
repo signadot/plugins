@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-INPUT_DIR="${INPUT_DIR:-/signadot/provision/input}"
-OUTPUT_DIR="${OUTPUT_DIR:-/signadot/provision/output}"
+INPUT_DIR="${INPUT_DIR:-/signadot/plugin/input}"
+OUTPUT_DIR="${OUTPUT_DIR:-/signadot/plugin/output}"
 
 if [ $# -ne 2 ]; then
   echo "usage: provision <sandbox-id> <resource-name>"

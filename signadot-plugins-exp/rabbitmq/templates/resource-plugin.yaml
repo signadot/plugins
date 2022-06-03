@@ -18,6 +18,7 @@ spec:
 
   type: ExecPod
   execPod:
+    imageSpecVersion: v1.0
     template:
       metadata:
         namespace: {{ .Release.Namespace | quote }}

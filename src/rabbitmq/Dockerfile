@@ -6,5 +6,4 @@ RUN apt-get update && \
     apt-get clean autoclean && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-COPY provision deprovision /signadot/provision/bin/
-
+COPY provision deprovision /signadot/plugin/bin/
