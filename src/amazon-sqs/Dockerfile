@@ -13,4 +13,4 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "aws
     rm -rf awscliv2.zip aws
 
 # Add our plugin's scripts.
-COPY provision deprovision /signadot/provision/bin/
+COPY provision deprovision /signadot/plugin/bin/
