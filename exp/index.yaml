@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   amazon-sqs:
   - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2022-06-09T07:05:57.230291524Z"
+    description: A Signadot Resource Plugin for provisioning queues in Amazon SQS.
+    digest: f3091f3babee17f2f34256e77baf2cfa2c119c0ede49f61e1ebe4c25c26edd4d
+    name: amazon-sqs
+    type: application
+    urls:
+    - https://github.com/signadot/plugins/releases/download/amazon-sqs-0.2.0/amazon-sqs-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 0.1.2
     created: "2022-05-16T15:39:08.353758923Z"
     description: A Signadot Resource Plugin for provisioning queues in Amazon SQS.
@@ -43,6 +53,16 @@ entries:
     version: 0.1.0
   mariadb:
   - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2022-06-09T07:05:57.41222217Z"
+    description: A Signadot Resource Plugin for provisioning MariaDB databases.
+    digest: c8d609b45db12b7cddca915b246cc8870f85a361929303eaed101beb3a747712
+    name: mariadb
+    type: application
+    urls:
+    - https://github.com/signadot/plugins/releases/download/mariadb-0.2.0/mariadb-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 0.1.0
     created: "2022-05-10T18:03:42.47270344Z"
     description: A Signadot Resource Plugin for provisioning MariaDB databases.
@@ -54,6 +74,16 @@ entries:
     version: 0.1.0
   rabbitmq:
   - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2022-06-09T07:05:57.571863504Z"
+    description: A Signadot Resource Plugin for provisioning vhosts with RabbitMQ
+    digest: 9516381d71f622c343f0fe43118a291f29d605e4754a31560a1ff94e727d6971
+    name: rabbitmq
+    type: application
+    urls:
+    - https://github.com/signadot/plugins/releases/download/rabbitmq-0.2.0/rabbitmq-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 0.1.0
     created: "2022-05-06T16:22:51.908438555Z"
     description: A Signadot Resource Plugin for provisioning vhosts with RabbitMQ
@@ -63,4 +93,4 @@ entries:
     urls:
     - https://github.com/signadot/plugins/releases/download/rabbitmq-0.1.0/rabbitmq-0.1.0.tgz
     version: 0.1.0
-generated: "2022-05-16T15:39:08.353777623Z"
+generated: "2022-06-09T07:05:57.571892004Z"
