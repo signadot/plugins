@@ -8,10 +8,10 @@ for use within a Signadot Sandbox.
 Before installing the plugin, create a Kubernetes Secret called `aws-auth` in
 the `signadot` namespace containing a `credentials` file in the format that the
 `aws` CLI typically reads from `~/.aws/credentials`. For example, if you have a
-`credentials` file prepared in the current directory:
+`credentials` file prepared at the path `/path/to/plugin-credentials`:
 
 ```sh
-kubectl -n signadot create secret generic aws-auth --from-file=credentials
+kubectl -n signadot create secret generic aws-auth --from-file=credentials=/path/to/plugin-credentials
 ```
 
 See the [AWS CLI docs](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-settings)
@@ -52,7 +52,7 @@ for use by forked workloads in the sandbox:
 
 Output Key | Description | Example
 ---------- | ----------- | -------
-`queue-name` | The name of the SQS queue that was created. | `signadot-k5ncuujcjllj2-MyResource`
+`queue-name` | The name of the SQS queue that was created. | `signadot-MyResource-k5ncuujcjllj2`
 `queue-url` | The URL of the SQS queue that was created. | `https://sqs.us-east-1.amazonaws.com/0123456789/signadot-k5ncuujcjllj2-MyResource`
 
 ## Removing the Plugin
