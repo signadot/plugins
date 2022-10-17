@@ -32,7 +32,7 @@ fi
 
 
 # Choose a bucket name that's globally unique.  The sandbox id
-# and prefix -signadot should guarantee uniqueness with high probability.
+# and prefix signadot- should guarantee uniqueness with high probability.
 BUCKET_NAME="signadot-${RESOURCE_NAME}-${SANDBOX_ID}"
 echo "Creating bucket: ${BUCKET_NAME}"
 
