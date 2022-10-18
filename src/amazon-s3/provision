@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+INPUT_DIR="${INPUT_DIR:-/signadot/plugin/input}"
+OUTPUT_DIR="${OUTPUT_DIR:-/signadot/plugin/output}"
+
+if [ $# -ne 2 ]; then
+  echo "usage: provision <sandbox-id> <resource-name>"
+  exit 1
+fi
+
+# Get values passed to us by Signadot Operator.
+# These tell us which resource name in which Sandbox we should provision.
+SANDBOX_ID=$1
+RESOURCE_NAME=$2
+
+echo "sandbox id: ${SANDBOX_ID}"
+echo "resource name: ${RESOURCE_NAME}"
+
+# Build args list for the 'mb' command.
+EXTRA_ARGS=()
+
+# Get values passed to us as "params" in the Sandbox's "resources" section.
+REGION=$(cat "${INPUT_DIR}/region")
+
+if [[ -e "${INPUT_DIR}/args" ]]; then
+  ATTRIBUTES=$(cat "${INPUT_DIR}/args")
+  echo "args: ${ARGS}"
+  EXTRA_ARGS+=("${ARGS}")
+fi
+
+
+# Choose a bucket name that's globally unique.  The sandbox id
+# and prefix signadot- should guarantee uniqueness with high probability.
+BUCKET_NAME="signadot-${RESOURCE_NAME}-${SANDBOX_ID}"
+echo "Creating bucket: ${BUCKET_NAME}"
+
+# Create the bucket. 
+aws --region "${REGION}" s3 mb "s3://${BUCKET_NAME}" "${EXTRA_ARGS[@]}"
+
+
+# Tell the fork(s) how to use the bucket.
+echo -n "${BUCKET_NAME}" > "${OUTPUT_DIR}/bucket-name"
