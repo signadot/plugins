@@ -1,0 +1,3 @@
+image: signadot/postgres-plugin:latest
+imagePullPolicy: IfNotPresent
+postgresAuthSecret: postgres-auth
