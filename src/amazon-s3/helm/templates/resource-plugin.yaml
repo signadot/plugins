@@ -4,7 +4,7 @@ metadata:
   name: sd-amazon-s3
 spec:
   description: |
-    Provision a temporary Amazon SQS bucket for use within a sandbox.
+    Provision a temporary Amazon S3 bucket for use within a sandbox.
 
     Each sandbox resource request must specify a 'region' parameter,
     indicating the AWS region in which to provision the bucket (e.g. us-east-1).

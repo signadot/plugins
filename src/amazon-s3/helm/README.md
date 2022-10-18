@@ -31,7 +31,7 @@ The following values can be configured for this chart via `--set` or `values.yam
 
 Value | Description | Default
 ----- | ----------- | -------
-`image` | The container image URL for the plugin | `signadot/amazon-sqs-plugin:{version}`
+`image` | The container image URL for the plugin | `signadot/amazon-s3-plugin:{version}`
 `imagePullPolicy` | The image pull policy for the plugin | `IfNotPresent`
 `awsAuthSecret` | The name of the Secret object in the `signadot` namespace containing a `credentials` file (usually found at `~/.aws/credentials`) in the format expected by the `aws` CLI. | `aws-auth`
 
