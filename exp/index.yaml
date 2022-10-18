@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  amazon-s3:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2022-10-18T19:30:29.060170841Z"
+    description: A Signadot Resource Plugin for provisioning Amazon S3 buckets
+    digest: 407733cf13d8a434863ca06baa1af820c6cbb3aa873585ce404911cf36526087
+    name: amazon-s3
+    type: application
+    urls:
+    - https://github.com/signadot/plugins/releases/download/amazon-s3-0.1.0/amazon-s3-0.1.0.tgz
+    version: 0.1.0
   amazon-sqs:
   - apiVersion: v2
     appVersion: 0.2.0
@@ -93,4 +104,4 @@ entries:
     urls:
     - https://github.com/signadot/plugins/releases/download/rabbitmq-0.1.0/rabbitmq-0.1.0.tgz
     version: 0.1.0
-generated: "2022-06-09T07:05:57.571892004Z"
+generated: "2022-10-18T19:30:29.060273741Z"
