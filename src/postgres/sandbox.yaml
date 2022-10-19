@@ -1,0 +1,6 @@
+name: test-postgres
+spec:
+  cluster: eks-eu
+  resources:
+  - name: psql
+    plugin: sd-postgres

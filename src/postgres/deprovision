@@ -4,6 +4,7 @@ set -euo pipefail
 
 INPUT_DIR="${INPUT_DIR:-/signadot/plugin/input}"
 OUTPUT_DIR="${OUTPUT_DIR:-/signadot/plugin/output}"
+SECRET_DIR="${SECRET_DIR:-/postgres-auth}"
 
 if [ $# -ne 2 ]; then
   echo "usage: deprovision <sandbox-id> <resource-name>"
@@ -25,4 +26,4 @@ export PGPASSWORD=$(cat ${SECRET_DIR}/password)
 
 DB_NAME=$(cat "${OUTPUT_DIR}/db-name")
 psql --host=$DBHOST --username=$DBUSER --command="DROP DATABASE \"$DB_NAME\""
-echo "Deleting db: ${DB_NAME}"
+echo "Deleted db: ${DB_NAME}"

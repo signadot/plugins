@@ -1,10 +1,10 @@
 .PHONY: build-image release-image release-chart
 
-NAME ?= postgres-test
+NAME ?= postgres
 CHART_ROOT ?= ../../signadot-plugins-exp
 
 IMAGE ?= signadot/$(NAME)-plugin
-IMAGE_TAG ?= latest
+IMAGE_TAG ?= v0.1.0
 PLATFORMS ?= linux/amd64,linux/arm64
 
 build-image:

@@ -4,7 +4,7 @@ set -euo pipefail
 
 INPUT_DIR="${INPUT_DIR:-/signadot/plugin/input}"
 OUTPUT_DIR="${OUTPUT_DIR:-/signadot/plugin/output}"
-SECRET_DIR="${SECRET_DIR:/postgres-auth}"
+SECRET_DIR="${SECRET_DIR:-/postgres-auth}"
 
 if [ $# -ne 2 ]; then
   echo "usage: provision <sandbox-id> <resource-name>"
@@ -24,10 +24,8 @@ echo "Creating DB: ${NEW_DB_NAME}"
 
 export DBHOST=$(cat ${SECRET_DIR}/host) #"demo-test-1.cykseg9phlso.us-west-1.rds.amazonaws.com"
 export DBUSER=$(cat ${SECRET_DIR}/user)
-export DBPORT=$(cat ${SECRET_DIR}/post)
+export DBPORT=$(cat ${SECRET_DIR}/port)
 export PGPASSWORD=$(cat ${SECRET_DIR}/password)
-#export DBNAME="staging"
-#export DBUSER="postgres"
 
 # Create the database
 DB_INFO=$(psql host=$DBHOST --username=$DBUSER --command="CREATE DATABASE 
