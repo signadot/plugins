@@ -59,7 +59,7 @@ spec:
       namespace: staging
     customizations:                           # how to fork the workload specified by forkOf
       env:                                    # define environment for containers in fork.
-      - name: DBHOST                          # environmental variable name.
+      - name: DBNAME                          # environmental variable name.
         valueFrom:                            # dynamic value, determined when the fork is created.
           resource:                           # value taken from sandbox resource
             name: psql                        # the resource is named 'testdb' in this sandbox.
@@ -74,6 +74,8 @@ Output Key | Description | Example
 `db-name` | The name of the database that was created. | `signadot-postgres-k5ncuujcjllj2`
 
 These can be injected into the workload as in the example above.
+
+When the sandbox is deleted, the database will be deprovisioned.
 
 ## Removing the Plugin
 
