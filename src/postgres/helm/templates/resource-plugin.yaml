@@ -1,0 +1,33 @@
+apiVersion: signadot.com/v1
+kind: SignadotResourcePlugin
+metadata:
+  name: sd-postgres
+spec:
+  description: |
+    Provision a postgres database from the postgres service.
+    Inputs: (none)
+
+    Outputs:
+      * db-name
+
+  type: ExecPod
+  execPod:
+    imageSpecVersion: v1.0
+    template:
+      metadata:
+        namespace: {{ .Release.Namespace | quote }}
+      spec:
+        containers:
+        - image: {{ .Values.image | quote }}
+          imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
+          name: plugin
+          env:
+          - name: NAMESPACE
+            value: {{ .Release.Namespace | quote }}
+          volumeMounts:
+          - name: postgres-auth
+            mountPath: /postgres-auth
+        volumes:
+        - name: postgres-auth
+          secret:
+            secretName: {{ .Values.postgresAuthSecret | quote }}
