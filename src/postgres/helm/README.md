@@ -18,7 +18,7 @@ For example
 kubectl -n signadot create secret generic postgres-auth \
     --from-literal=user=postgres \
     --from-literal=password=xyz \
-    --from-literal=host=demo-test-1.cykz7h9jhlso.us-west-1.rds.amazonaws.com \
+    --from-literal=host=staging.postgres.my-company.com \
     --from-literal=port=5432
 ```
 
@@ -36,7 +36,7 @@ The following values can be configured for this chart via `--set` or `values.yam
 
 Value | Description | Default
 ----- | ----------- | -------
-`image` | The container image URL for the plugin | `signadot/amazon-sqs-plugin:{version}`
+`image` | The container image URL for the plugin | `signadot/postgres-plugin:{version}`
 `imagePullPolicy` | The image pull policy for the plugin | `IfNotPresent`
 `postgresAuthSecret` | The name of the Secret object in the `signadot` namespace containing the secret described above. | `postgres-auth`
 

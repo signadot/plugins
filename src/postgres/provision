@@ -22,7 +22,7 @@ echo "resource name: ${RESOURCE_NAME}"
 NEW_DB_NAME="signadot-${RESOURCE_NAME}-${SANDBOX_ID}"
 echo "Creating DB: ${NEW_DB_NAME}"
 
-export DBHOST=$(cat ${SECRET_DIR}/host) #"demo-test-1.cykseg9phlso.us-west-1.rds.amazonaws.com"
+export DBHOST=$(cat ${SECRET_DIR}/host)
 export DBUSER=$(cat ${SECRET_DIR}/user)
 export DBPORT=$(cat ${SECRET_DIR}/port)
 export PGPASSWORD=$(cat ${SECRET_DIR}/password)
