@@ -83,6 +83,17 @@ entries:
     urls:
     - https://github.com/signadot/plugins/releases/download/mariadb-0.1.0/mariadb-0.1.0.tgz
     version: 0.1.0
+  postgres:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-10-26T08:40:51.549605316Z"
+    description: A Signadot Resource Plugin for provisioning Postgres DB.
+    digest: 3cc8716dcd5e48fd7ec50bf27862327f76129df2be9b9950b432d2cdae0399a2
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/signadot/plugins/releases/download/postgres-0.0.1/postgres-0.0.1.tgz
+    version: 0.0.1
   rabbitmq:
   - apiVersion: v2
     appVersion: 0.2.0
@@ -104,4 +115,4 @@ entries:
     urls:
     - https://github.com/signadot/plugins/releases/download/rabbitmq-0.1.0/rabbitmq-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-18T19:30:29.060273741Z"
+generated: "2022-10-26T08:40:51.549639316Z"
