@@ -45,7 +45,7 @@ Parameter | Description | Example
 --------- | ----------- | -------
 `region` (Required) | The AWS region in which to create the queue | `us-east-1`
 `attributes` | Optional value to pass to the `aws sqs create-queue` command's `--attributes` flag. See the [command reference](https://docs.aws.amazon.com/cli/latest/reference/sqs/create-queue.html) for details. | `DelaySeconds=30`
-`tags` | Optional value to pass to the `aws sqs create-queu` command's `--tags` flag. See the [command reference](https://docs.aws.amazon.com/cli/latest/reference/sqs/create-queue.html) for details. | `MyTag=value,Tag2=value`
+`tags` | Optional value to pass to the `aws sqs create-queue` command's `--tags` flag. See the [command reference](https://docs.aws.amazon.com/cli/latest/reference/sqs/create-queue.html) for details. | `MyTag=value,Tag2=value`
 
 After the resource is provisioned, the following output keys will be available
 for use by forked workloads in the sandbox:
