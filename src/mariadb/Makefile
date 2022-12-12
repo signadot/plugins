@@ -15,7 +15,7 @@ release-image:
 	# Build and push multi-arch manifest.
 	docker buildx build --push --tag $(IMAGE):$(IMAGE_TAG) --platform $(PLATFORMS) .
 
-release-chart:
+release-chart: release-image
 	# Copy latest Helm chart into the directory tree that gets auto-published.
 	rm -rf $(CHART_ROOT)/$(NAME)
 	mkdir $(CHART_ROOT)/$(NAME)
