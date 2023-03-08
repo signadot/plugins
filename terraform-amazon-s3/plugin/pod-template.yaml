@@ -1,0 +1,12 @@
+metadata:
+  namespace: signadot
+spec:
+  containers:
+  - name: main
+    volumeMounts:
+    - name: aws-auth
+      mountPath: /root/.aws
+  volumes:
+  - name: aws-auth
+    secret:
+      secretName: aws-auth

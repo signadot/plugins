@@ -1,3 +1,0 @@
-image: signadot/amazon-s3-plugin:v0.1.0
-imagePullPolicy: IfNotPresent
-awsAuthSecret: aws-auth

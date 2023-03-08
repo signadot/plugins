@@ -1,6 +1,0 @@
-apiVersion: v2
-name: amazon-s3
-description: A Signadot Resource Plugin for provisioning Amazon S3 buckets
-type: application
-version: 0.1.0
-appVersion: "0.1.0"
