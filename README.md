@@ -8,5 +8,9 @@ For more information, please refer our documentation at [sandbox-resources](http
 - `terraform-amazon-s3`: A plugin that uses a terraform script to create an AWS S3 bucket.
 - `postgres-vault`: A plugin integrated with [hashicorp vault](https://www.vaultproject.io/) that provisions a temporary postgres database.
 
-If you are looking for the legacy plugins format, you can find it in [`legacy` branch](https://github.com/signadot/plugins/tree/legacy).
+If you are looking for the legacy plugins format, you can find it in the [`legacy` branch](https://github.com/signadot/plugins/tree/legacy).
+Below, is an example of how to port a legacy plugin into the current format:
+
+- `legacy-mariadb-ported`: Converts the [legacy mariadb plugin](https://github.com/signadot/plugins/tree/legacy/signadot-plugins-exp/mariadb) into the new format.
+
 To file an issue, please use our [community issue tracker](https://github.com/signadot/community/issues).

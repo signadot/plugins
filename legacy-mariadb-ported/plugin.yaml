@@ -1,0 +1,35 @@
+name: mariadb
+spec:
+  description: |
+    Provision a MariaDB instance
+
+    Sandbox should provide input 'dbname' for the name of the database.
+    Plugin provisioner provides outputs 'host', 'port', 'root-password' for 
+    an empty database instance tied to the lifetime of the sandbox.
+
+  runner:
+    image: signadot/mariadb-plugin:v0.2.0
+    namespace: signadot
+    basePodTemplate: @{include: ./plugin/pod-template.yaml}
+
+  create:
+  - name: provision
+    inputs:
+    - name: dbname
+      valueFromSandbox: true
+      to:
+        localPath: /signadot/plugin/input/dbname
+
+    outputs:
+    - name: host
+      from: /signadot/plugin/output/host
+    - name: port
+      from: /signadot/plugin/output/port
+    - name: root-password
+      from: /signadot/plugin/output/root_password
+
+    script: @{include: ./plugin/provision.sh}
+
+  delete:
+    - name: deprovision
+      script: @{include: ./plugin/deprovision.sh}
