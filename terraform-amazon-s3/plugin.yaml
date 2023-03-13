@@ -10,6 +10,7 @@ spec:
 
   runner:
     image: hashicorp/terraform
+    namespace: signadot
     basePodTemplate: @{include: ./plugin/pod-template.yaml}
 
   create:
@@ -17,14 +18,12 @@ spec:
     inputs:
     - name: region
       valueFromSandbox: true
+      to:
+        env: AWS_REGION
 
     outputs:
     - name: bucket-name
       from: /tmp/bucket-name
-
-    env:
-    - name: AWS_REGION
-      valueFromInput: region
 
     script: @{include: ./plugin/provision.sh}
 
@@ -33,15 +32,13 @@ spec:
     inputs:
     - name: region
       valueFromSandbox: true
+      to:
+        env: AWS_REGION
     - name: bucket-name
       valueFromStep:
         name: provision
-        value: bucket-name
-
-    env:
-    - name: AWS_REGION
-      valueFromInput: region
-    - name: BUCKET_NAME
-      valueFromInput: bucket-name
+        output: bucket-name
+      to:
+        env: BUCKET_NAME
 
     script: @{include: ./plugin/deprovision.sh}

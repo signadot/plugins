@@ -1,0 +1,43 @@
+name: postgres-vault
+spec:
+  description: |
+    Provision and seed a postgres database from a postgres service.
+
+  runner:
+    image: postgres
+    namespace: signadot
+    basePodTemplate: @{include: ./plugin/pod-template.yaml}
+
+  create:
+  # Provision step
+  - name: provision
+    outputs:
+    - name: db-name
+      from: /tmp/db-name
+
+    script: @{include: ./plugin/provision.sh}
+
+  # Setup step
+  - name: setup
+    inputs:
+    - name: db-name
+      valueFromStep:
+        name: provision
+        output: db-name
+      to:
+        env: DB_NAME
+
+    script: @{include: ./plugin/setup.sh}
+
+  delete:
+  # Deprovision step
+  - name: deprovision
+    inputs:
+    - name: db-name
+      valueFromStep:
+        name: provision
+        output: db-name
+      to:
+        env: DB_NAME
+
+    script: @{include: ./plugin/deprovision.sh}

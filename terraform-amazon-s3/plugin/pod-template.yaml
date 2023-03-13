@@ -1,5 +1,3 @@
-metadata:
-  namespace: signadot
 spec:
   containers:
   - name: main
