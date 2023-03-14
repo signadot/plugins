@@ -10,7 +10,14 @@ spec:
   runner:
     image: signadot/mariadb-plugin:v0.2.0
     namespace: signadot
-    basePodTemplate: @{include: ./plugin/pod-template.yaml}
+    basePodTemplate:
+      spec:
+        serviceAccountName: sd-mariadb
+        containers:
+        - name: plugin
+          env:
+          - name: NAMESPACE
+            value: signadot
 
   create:
   - name: provision
@@ -28,8 +35,20 @@ spec:
     - name: root-password
       from: /signadot/plugin/output/root_password
 
-    script: @{include: ./plugin/provision.sh}
+    script: |
+      #!/bin/bash
+      # exit when any command fails
+      set -e
+
+      mkdir -p /signadot/plugin/output
+      /signadot/plugin/bin/provision ${SIGNADOT_SANDBOX_ID} ${SIGNADOT_RESOURCE_NAME}
+
 
   delete:
     - name: deprovision
-      script: @{include: ./plugin/deprovision.sh}
+      script: |
+        #!/bin/bash
+        # exit when any command fails
+        set -e
+
+        /signadot/plugin/bin/deprovision ${SIGNADOT_SANDBOX_ID} ${SIGNADOT_RESOURCE_NAME}
