@@ -6,7 +6,7 @@ spec:
   runner:
     image: postgres
     namespace: signadot
-    basePodTemplate: @{include: ./plugin/pod-template.yaml}
+    podTemplateOverlay: "@{embed:./plugin/pod-template.yaml}"
 
   create:
   # Provision step
@@ -15,7 +15,7 @@ spec:
     - name: db-name
       from: /tmp/db-name
 
-    script: @{include: ./plugin/provision.sh}
+    script: "@{embed:./plugin/provision.sh}"
 
   # Setup step
   - name: setup
@@ -27,7 +27,7 @@ spec:
       to:
         env: DB_NAME
 
-    script: @{include: ./plugin/setup.sh}
+    script: "@{embed:./plugin/setup.sh}"
 
   delete:
   # Deprovision step
@@ -40,4 +40,4 @@ spec:
       to:
         env: DB_NAME
 
-    script: @{include: ./plugin/deprovision.sh}
+    script: "@{embed:./plugin/deprovision.sh}"
