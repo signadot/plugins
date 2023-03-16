@@ -1,0 +1,65 @@
+name: amazon-sqs
+spec:
+  description: |
+    Provision a temporary queue in Amazon SQS for use within a sandbox.
+
+    Each sandbox resource request must specify a 'region' parameter,
+    indicating the AWS region in which to provision the queue (e.g. us-east-1).
+
+    Each sandbox resource request can optionally specify 'attributes' and 'tags'
+    that will be passed to the corresponding flags in the 'aws sqs create-queue'
+    command: https://docs.aws.amazon.com/cli/latest/reference/sqs/create-queue.html
+
+    The temporary queue name will be available as the output key 'queue-name',
+    and the queue URL will be available as the key 'queue-url'.
+
+  runner:
+    image: amazon/aws-cli
+    namespace: signadot
+    podTemplateOverlay: "@{embed:./plugin/pod-template.yaml}"
+
+  create:
+  - name: provision
+    inputs:
+    - name: region
+      valueFromSandbox: true
+      to:
+        env: AWS_REGION
+    - name: attributes
+      valueFromSandbox: true
+      to:
+        env: ATTRIBUTES
+    - name: tags
+      valueFromSandbox: true
+      to:
+        env: TAGS
+
+    outputs:
+    - name: queue-name
+      from: /tmp/queue-name
+    - name: queue-url
+      from: /tmp/queue-url
+
+    script: "@{embed:./plugin/provision.sh}"
+
+  delete:
+  - name: deprovision
+    inputs:
+    - name: region
+      valueFromSandbox: true
+      to:
+        env: AWS_REGION
+    - name: queue-name
+      valueFromStep:
+        name: provision
+        output: queue-name
+      to:
+        env: QUEUE_NAME
+    - name: queue-url
+      valueFromStep:
+        name: provision
+        output: queue-url
+      to:
+        env: QUEUE_URL
+
+    script: "@{embed:./plugin/deprovision.sh}"
