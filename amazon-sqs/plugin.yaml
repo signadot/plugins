@@ -23,22 +23,22 @@ spec:
     inputs:
     - name: region
       valueFromSandbox: true
-      to:
+      as:
         env: AWS_REGION
     - name: attributes
       valueFromSandbox: true
-      to:
+      as:
         env: ATTRIBUTES
     - name: tags
       valueFromSandbox: true
-      to:
+      as:
         env: TAGS
 
     outputs:
     - name: queue-name
-      from: /tmp/queue-name
+      valueFromPath: /tmp/queue-name
     - name: queue-url
-      from: /tmp/queue-url
+      valueFromPath: /tmp/queue-url
 
     script: "@{embed:./plugin/provision.sh}"
 
@@ -47,19 +47,19 @@ spec:
     inputs:
     - name: region
       valueFromSandbox: true
-      to:
+      as:
         env: AWS_REGION
     - name: queue-name
       valueFromStep:
         name: provision
         output: queue-name
-      to:
+      as:
         env: QUEUE_NAME
     - name: queue-url
       valueFromStep:
         name: provision
         output: queue-url
-      to:
+      as:
         env: QUEUE_URL
 
     script: "@{embed:./plugin/deprovision.sh}"

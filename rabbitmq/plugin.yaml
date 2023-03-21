@@ -22,7 +22,7 @@ spec:
     inputs:
     - name: refvhost
       valueFromSandbox: true
-      to:
+      as:
         env: RABBIT_REF_VHOST
     - name: users
       valueFromSandbox: true

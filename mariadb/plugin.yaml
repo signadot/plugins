@@ -19,16 +19,16 @@ spec:
     inputs:
     - name: dbname
       valueFromSandbox: true
-      to:
+      as:
         env: DBNAME
 
     outputs:
     - name: host
-      from: /tmp/host
+      valueFromPath: /tmp/host
     - name: port
-      from: /tmp/port
+      valueFromPath: /tmp/port
     - name: root-password
-      from: /tmp/root-password
+      valueFromPath: /tmp/root-password
 
     script: "@{embed:./plugin/provision.sh}"
 

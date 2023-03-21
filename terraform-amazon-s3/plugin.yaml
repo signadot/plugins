@@ -18,12 +18,12 @@ spec:
     inputs:
     - name: region
       valueFromSandbox: true
-      to:
+      as:
         env: AWS_REGION
 
     outputs:
     - name: bucket-name
-      from: /tmp/bucket-name
+      valueFromPath: /tmp/bucket-name
 
     script: "@{embed:./plugin/provision.sh}"
 
@@ -32,13 +32,13 @@ spec:
     inputs:
     - name: region
       valueFromSandbox: true
-      to:
+      as:
         env: AWS_REGION
     - name: bucket-name
       valueFromStep:
         name: provision
         output: bucket-name
-      to:
+      as:
         env: BUCKET_NAME
 
     script: "@{embed:./plugin/deprovision.sh}"

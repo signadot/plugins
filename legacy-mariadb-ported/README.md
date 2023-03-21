@@ -6,7 +6,7 @@ Here are some highlights about the convertion:
 
 - The `runner.image` equals the [legacy plugin image](https://github.com/signadot/plugins/blob/206f2ba4421caf12d9cf024cd55ee64f7378728f/signadot-plugins-exp/mariadb/values.yaml#L1).
 - The provision (`plugin/provision.sh`) and deprovision (`plugin/deprovision.sh`) scripts call `/signadot/plugin/bin/provision` and `/signadot/plugin/bin/deprovision` passing `SIGNADOT_SANDBOX_ID` and `SIGNADOT_RESOURCE_NAME` as arguments.
-- The inputs are injected into `localPath: /signadot/plugin/input/<input-name>`
+- The inputs are injected into `path: /signadot/plugin/input/<input-name>`
 - The outputs are read from `/signadot/plugin/output/`
 
 

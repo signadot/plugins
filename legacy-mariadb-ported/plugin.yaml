@@ -24,16 +24,16 @@ spec:
     inputs:
     - name: dbname
       valueFromSandbox: true
-      to:
-        localPath: /signadot/plugin/input/dbname
+      as:
+        path: /signadot/plugin/input/dbname
 
     outputs:
     - name: host
-      from: /signadot/plugin/output/host
+      valueFromPath: /signadot/plugin/output/host
     - name: port
-      from: /signadot/plugin/output/port
+      valueFromPath: /signadot/plugin/output/port
     - name: root-password
-      from: /signadot/plugin/output/root_password
+      valueFromPath: /signadot/plugin/output/root_password
 
     script: |
       #!/bin/bash
