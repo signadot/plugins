@@ -23,11 +23,12 @@ RABBIT_SVC_NAME=$(cat "${RABBIT_SECRET_DIR}/svc-name")
 RABBIT_USERNAME=$(cat "${RABBIT_SECRET_DIR}/username")
 RABBIT_PASSWORD=$(cat "${RABBIT_SECRET_DIR}/password")
 
+
 #
 # install jq
 #
-curl  -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -o /bin/jq
-chmod +x /bin/jq
+apt update
+apt install -y jq
 
 
 HOSTNAME=${RABBIT_SVC_NAME}.${RABBIT_SVC_NS}.svc

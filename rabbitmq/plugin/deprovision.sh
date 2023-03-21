@@ -20,7 +20,7 @@ HOSTNAME=${RABBIT_SVC_NAME}.${RABBIT_SVC_NS}.svc
 #HOSTNAME=localhost
 
 # Choose a queue name that's unique to this resource in this sandbox.
-VHOST_NAME="/sd-${RESOURCE_NAME,,}-${SANDBOX_ID}"
+VHOST_NAME="/sd-${SIGNADOT_RESOURCE_NAME}-${SIGNADOT_SANDBOX_ID}"
 HOSTNAME=${RABBIT_SVC_NAME}.${RABBIT_SVC_NS}.svc
 
 for user in $RABBIT_USERS; do
