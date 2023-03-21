@@ -26,11 +26,11 @@ spec:
         env: RABBIT_REF_VHOST
     - name: users
       valueFromSandbox: true
-      to:
+      as:
         env: RABBIT_USERS
     outputs:
     - name: vhost-name
-      from: /tmp/vhost-name
+      valueFromPath: /tmp/vhost-name
 
     script: "@{embed: plugin/provision.sh}"
   delete:
