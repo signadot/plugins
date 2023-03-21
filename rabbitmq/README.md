@@ -1,9 +1,24 @@
 # RabbitMQ Plugin
 
-This is a resource plugin that provisions temporary vhosts in RabbitMQ
-for use within a Signadot Sandbox.
+This is a resource plugin that provisions temporary virtual hosts in RabbitMQ
+for use within a Signadot Sandbox.  Each temporary virtual host is a unique
+clone of a reference virtual host, specified in a Signadot Sandbox spec. Each
+Signadot Sandbox also provides a list of rabbitmq users, and those users are
+provided access to the temporary virtual host by this plugin.
+
+For more information about RabbitMQ virtual hosts, please see
+https://www.rabbitmq.com/vhosts.html
 
 ## Installing the Plugin
+
+This plugin is installed using the [signadot cli](https://docs.signadot.com/docs/cli) 
+by calling
+```
+signadot resourceplugin apply -f plugin.yaml
+```
+
+However, the plugin assumes certain things exist when it is used by a sandbox,
+in your cluster.
 
 You will need a kubernetes cluster with the Signadot operator and RabbitMQ
 running the admin api (such as is found
@@ -18,22 +33,6 @@ to create the vhost.
 - `password`: the password with which to autheticate with `rabbitmqadmin`
 to create the vhost.
 
-## Setting up the username and password in RabbitMQ
-
-The following example sets up a username and password for authenticating
-`rabbitmqadmin`
-
-```sh
-rabbitmqctl add_user test 123
-rabbitmqctl set_user_tags test administrator 
-rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
-```
-
-The reader is referred to [the rabbitmq docs](https://www.rabbitmq.com/cli.html#remote-nodes)
-for more information.
-
-## Setting up the secret
-
 The following command is an example of setting up a secret as needed to install the
 plugin
 
@@ -45,19 +44,25 @@ kubectl -n signadot create secret generic rabbitmq-auth  \
 	--from-literal=password=123
 ```
 
-## Installing this plugin
+### Setting up the username and password in RabbitMQ
 
-Make sure the target Kubernetes cluster already has Signadot Operator installed,
-and a rabbitmq stateful set running the management protocol.
+If you are creating this plugin to run as a specific RabbitMQ user, you may
+wish to create the user.  The following example sets up a username and password
+for authenticating `rabbitmqadmin`
 
 ```sh
-helm repo add signadot-plugins-exp https://plugins.signadot.com/exp
-helm -n signadot install rabbitmq-plugin signadot-plugins-exp/rabbitmq
+rabbitmqctl add_user test 123
+rabbitmqctl set_user_tags test administrator 
+rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
 ```
+
+The reader is referred to [the rabbitmq docs](https://www.rabbitmq.com/cli.html#remote-nodes)
+for more information.
+
 
 ## Using the Plugin
 
-When creating a Signadot Sandbox, you can request a temporary rabbit mq vhost for
+When creating a Signadot Sandbox, you can request a temporary rabbit mq virtual host for
 an existing set of rabbitmq users from this plugin by specifying the plugin name 
 `sd-rabbitmq` and passing the following input parameters.
 
@@ -82,4 +87,7 @@ uninstall the plugin:
 ```sh
 signadot resourceplugin delete rabbitmq
 ```
+
+You may want to delete the secret `rabbitmq-auth` as well.
+
 
