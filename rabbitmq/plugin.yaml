@@ -1,0 +1,40 @@
+name: rabbitmq
+spec:
+  description: |
+    Provision a temporary vhost in rabbitmq services for use with a sandbox.
+
+
+    Parameters:
+
+      - refvhost: the name of the vhost to use as a reference.
+      - users: comma separated list of usernames which will access the new
+        vhost.
+
+    Outputs:
+
+      - vhost-name: the name of the newly provisioned rabbit mq vhost.
+  runner:
+    image: rabbitmq:3.9-management
+    namespace: signadot
+    podTemplateOverlay: "@{embed: plugin/pod-template.yaml}"
+  create:
+  - name: provision
+    inputs:
+    - name: refvhost
+      valueFromSandbox: true
+      to:
+        env: RABBIT_REF_VHOST
+    - name: users
+      valueFromSandbox: true
+      to:
+        env: RABBIT_USERS
+    outputs:
+    - name: vhost-name
+      from: /tmp/vhost-name
+
+    script: "@{embed: plugin/provision.sh}"
+  delete:
+  - name: deprovision
+    script: "@{embed: plugin/deprovision.sh}"
+
+

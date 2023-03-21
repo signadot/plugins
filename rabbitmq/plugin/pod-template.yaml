@@ -1,0 +1,10 @@
+spec:
+  containers:
+  - name: rabbitmq
+    volumeMounts:
+    - name: rabbitmq-auth
+      mountPath: /rabbitmq-auth
+  volumes:
+  - name: rabbitmq-auth
+    secret:
+      secretName: rabbitmq-auth
