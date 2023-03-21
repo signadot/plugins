@@ -1,3 +1,6 @@
+#
+# example sandbox spec using the plugin
+#
 name: test-rabbit
 spec:
   cluster: air
