@@ -7,7 +7,7 @@ apt update; apt install -y git
 
 # Clone the git repo
 git clone https://github.com/signadot/plugins.git
-cd plugins/postgres-vault/data/
+cd plugins/postgres-vault/example/
 
 echo "Populating DB ${DB_NAME}"
 

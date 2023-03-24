@@ -8,7 +8,7 @@ This is a multi-step resource plugin that:
 It uses:
 
 - [Hashicorp vault](https://www.vaultproject.io/) to retrive the credentials needed to connect the postgres service.
-- Git to clone a remote repository where the seeding data is located (see `data` directory).
+- Git to clone a remote repository where the seeding data is located (see the [`example`](./example/) directory).
 
 ## Installing the Plugin
 

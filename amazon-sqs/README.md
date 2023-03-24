@@ -1,4 +1,4 @@
-# Terraform Amazon S3 Plugin
+# Terraform Amazon SQS Plugin
 
 This is a resource plugin that provisions temporary queues in Amazon SQS
 for use within a Signadot Sandbox.

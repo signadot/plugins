@@ -30,8 +30,8 @@ spec:
     - name: root-password
       valueFromPath: /tmp/root-password
 
-    script: "@{embed:./plugin/provision.sh}"
+    script: "@{embed: ./plugin/provision.sh}"
 
   delete:
     - name: deprovision
-      script: "@{embed:./plugin/deprovision.sh}"
+      script: "@{embed: ./plugin/deprovision.sh}"

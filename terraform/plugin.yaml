@@ -1,17 +1,25 @@
-name: terraform-amazon-s3
+name: terraform
 spec:
   description: |
-    Provision and populates a temporary Amazon S3 bucket for use within a sandbox.
-
-    Each sandbox resource request must specify a 'region' parameter,
-    indicating the AWS region in which to provision the bucket (e.g. us-east-1).
-
-    The temporary bucket name will be available as the output key 'provision.bucket-name'.
+    This is a sample terraform script that provisions a temporary Amazon S3
+    bucket for use within a sandbox.
 
   runner:
     image: hashicorp/terraform
     namespace: signadot
-    podTemplateOverlay: "@{embed:./plugin/pod-template.yaml}"
+    podTemplateOverlay: |
+      containers:
+      - name: main
+        env:
+        - name: TFSTATE_BUCKET
+          value: @{tfstate-bucket}
+        volumeMounts:
+        - name: aws-auth
+          mountPath: /root/.aws
+      volumes:
+      - name: aws-auth
+        secret:
+          secretName: aws-auth
 
   create:
   - name: provision
@@ -25,7 +33,7 @@ spec:
     - name: bucket-name
       valueFromPath: /tmp/bucket-name
 
-    script: "@{embed:./plugin/provision.sh}"
+    script: "@{embed: ./plugin/provision.sh}"
 
   delete:
   - name: deprovision
@@ -41,4 +49,4 @@ spec:
       as:
         env: BUCKET_NAME
 
-    script: "@{embed:./plugin/deprovision.sh}"
+    script: "@{embed: ./plugin/deprovision.sh}"
