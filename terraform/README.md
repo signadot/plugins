@@ -43,13 +43,13 @@ Finally, using the `signadot` CLI, register the plugin in Signadot Control Plane
 the selected bucket name):
 
 ```sh
-signadot plugin apply -f ./plugin.yaml --set tfstate-bucket=<tfstate-bucket>
+signadot resourceplugin apply -f ./plugin.yaml --set tfstate-bucket=<tfstate-bucket>
 ```
 
 ## Using the Plugin
 
 When creating a Signadot Sandbox, you can request a temporary S3 bucket from
-this plugin by specifying the plugin name `terraform-amazon-s3` and passing the following input parameters.
+this plugin by specifying the plugin name `terraform` and passing the following input parameters.
 
 Parameter | Description | Example
 --------- | ----------- | -------
@@ -68,7 +68,7 @@ Make sure all sandboxes that used the chart are deleted, so that the plugin gets
 a chance to deprovision anything that was provisioned, and then use `signadot` CLI to uninstall the plugin:
 
 ```sh
-signadot plugin delete -f ./plugin.yaml
+signadot resourceplugin delete terraform
 ```
 
 Finally delete the `aws-auth` secret from `signadot` namespace:

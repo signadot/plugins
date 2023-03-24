@@ -8,18 +8,19 @@ spec:
     image: hashicorp/terraform
     namespace: signadot
     podTemplateOverlay: |
-      containers:
-      - name: main
-        env:
-        - name: TFSTATE_BUCKET
-          value: @{tfstate-bucket}
-        volumeMounts:
+      spec:
+        containers:
+        - name: main
+          env:
+          - name: TFSTATE_BUCKET
+            value: @{tfstate-bucket}
+          volumeMounts:
+          - name: aws-auth
+            mountPath: /root/.aws
+        volumes:
         - name: aws-auth
-          mountPath: /root/.aws
-      volumes:
-      - name: aws-auth
-        secret:
-          secretName: aws-auth
+          secret:
+            secretName: aws-auth
 
   create:
   - name: provision
