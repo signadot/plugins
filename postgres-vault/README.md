@@ -8,7 +8,7 @@ This is a multi-step resource plugin that:
 It uses:
 
 - [Hashicorp vault](https://www.vaultproject.io/) to retrive the credentials needed to connect the postgres service.
-- Git to clone a remote repository where the seeding data is located (see `data` directory).
+- Git to clone a remote repository where the seeding data is located (see the [`example`](./example/) directory).
 
 ## Installing the Plugin
 
@@ -55,7 +55,7 @@ vault write auth/kubernetes/role/sd-postgresdb-role \
 Using the `signadot` CLI, register the plugin in Signadot Control Plane:
 
 ```sh
-signadot plugin apply -f ./plugin.yaml
+signadot resourceplugin apply -f ./plugin.yaml
 ```
 
 ## Using the Plugin
@@ -76,5 +76,5 @@ Make sure all sandboxes that used the chart are deleted, so that the plugin gets
 a chance to deprovision anything that was provisioned, and then use `signadot` CLI to uninstall the plugin:
 
 ```sh
-signadot plugin delete -f ./plugin.yaml
+signadot resourceplugin delete -f ./plugin.yaml
 ```

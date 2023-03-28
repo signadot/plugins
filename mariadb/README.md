@@ -7,13 +7,13 @@ This is a resource plugin that provisions a temporary mariadb server for use wit
 Before installing the plugin, create the required service account and RBAC permissions:
 
 ```sh
-kubectl -n signadot create -f ./init/mariadb-init.yaml
+kubectl -n signadot create -f ./k8s/mariadb-init.yaml
 ```
 
 Using the `signadot` CLI, register the plugin in Signadot Control Plane:
 
 ```sh
-signadot plugin apply -f ./plugin.yaml
+signadot resourceplugin apply -f ./plugin.yaml
 ```
 
 ## Using the Plugin
@@ -42,11 +42,11 @@ Make sure all sandboxes that used the chart are deleted, so that the plugin gets
 a chance to deprovision anything that was provisioned, and then use `signadot` CLI to uninstall the plugin:
 
 ```sh
-signadot plugin delete -f ./plugin.yaml
+signadot resourceplugin delete -f ./plugin.yaml
 ```
 
 Finally delete the service account and RBAC permissions:
 
 ```sh
-kubectl -n signadot delete -f ./init/mariadb-init.yaml
+kubectl -n signadot delete -f ./k8s/mariadb-init.yaml
 ```
