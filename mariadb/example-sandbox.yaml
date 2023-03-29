@@ -1,0 +1,18 @@
+name: test-mariadb
+spec:
+  resources:
+  - name: mydb
+    params:
+      dbname: testdb
+
+  defaultRouteGroup:
+    endpoints:
+    - name: echoenv
+      target: "http://echo-env.@{namespace}.svc:8080"
+
+  forks:
+  - forkOf:
+      namespace: "@{namespace}"
+      name: echo-env
+      kind: Deployment
+
