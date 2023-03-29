@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: echo-env
+  name: echo-env
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-baseline
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: example-baseline
+      annotations:
+        sidecar.signadot.com/inject: "http"
+    spec:
+      containers:
+      - image: signadot/echo-env:latest
+        imagePullPolicy: Always
+        name: echo-env
+        ports:
+        - containerPort: 8080
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: echo-env
+  name: echo-env
+spec:
+  ports:
+    - name: http-web
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: echo-env
