@@ -1,7 +1,9 @@
 name: test-mariadb
 spec:
+  cluster: "@{cluster}"
   resources:
   - name: mydb
+    plugin: mariadb
     params:
       dbname: testdb
 
