@@ -31,7 +31,7 @@ If you are looking for the legacy plugins format, you can find it in the [`legac
 If you'd like to translate an old plugin into the new system, below is an
 example of how to port a legacy plugin into the current format:
 
-- `port-old2new-example`: Converts the [legacy mariadb plugin](https://github.com/signadot/plugins/tree/legacy/signadot-plugins-exp/mariadb) into the new format.
+- [`port-old2new-example`](./port-old2new-example/): Converts the [legacy mariadb plugin](https://github.com/signadot/plugins/tree/legacy/signadot-plugins-exp/mariadb) into the new format.
 
 ## Community
 

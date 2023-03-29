@@ -56,5 +56,5 @@ signadot resourceplugin delete -f ./plugin.yaml
 Finally delete the service account and RBAC permissions:
 
 ```sh
-kubectl -n signadot delete -f ./../mariadb/init/mariadb-init.yaml
+kubectl -n signadot delete -f ./../mariadb/k8s/mariadb-init.yaml
 ```
