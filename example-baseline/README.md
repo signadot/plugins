@@ -49,7 +49,7 @@ giving the environment of the request.  For example:
     ]
   },
   "method": "GET",
-  "requestURL": "/"
+  "requestURI": "/"
 }
 
 ```
