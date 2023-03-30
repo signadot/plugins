@@ -1,0 +1,26 @@
+name: test-terraform
+spec:
+  cluster: "@{cluster}"
+  resources:
+  - name: mybucket
+    plugin: terraform
+    params:
+      region: us-west-2
+
+  defaultRouteGroup:
+    endpoints:
+    - name: echoenv
+      target: "http://echo-env.@{namespace}.svc:8080"
+
+  forks:
+  - forkOf:
+      namespace: "@{namespace}"
+      name: echo-env
+      kind: Deployment
+    customizations:
+      env:
+      - name: S3_BUCKET_NAME
+        valueFrom:
+          resource:
+            name: mybucket
+            outputKey: provision.bucket-name
