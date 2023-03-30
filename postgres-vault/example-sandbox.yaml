@@ -1,0 +1,24 @@
+name: test-postgres-vault
+spec:
+  cluster: "@{cluster}"
+  resources:
+  - name: pgdb
+    plugin: postgres-vault
+
+  defaultRouteGroup:
+    endpoints:
+    - name: echoenv
+      target: "http://echo-env.@{namespace}.svc:8080"
+
+  forks:
+  - forkOf:
+      namespace: "@{namespace}"
+      name: echo-env
+      kind: Deployment
+    customizations:
+      env:
+      - name: DB_NAME
+        valueFrom:
+          resource:
+            name: pgdb
+            outputKey: provision.db-name

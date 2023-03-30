@@ -1,3 +1,0 @@
-image: signadot/amazon-sqs-plugin:v0.2.0
-imagePullPolicy: IfNotPresent
-awsAuthSecret: aws-auth

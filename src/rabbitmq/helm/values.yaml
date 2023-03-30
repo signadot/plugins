@@ -1,3 +1,0 @@
-image: signadot/rabbitmq-plugin:v0.2.0
-imagePullPolicy: IfNotPresent
-rabbitAuthSecret: rabbitmq-auth

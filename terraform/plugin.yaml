@@ -1,0 +1,53 @@
+name: terraform
+spec:
+  description: |
+    This is a sample terraform script that provisions a temporary Amazon S3
+    bucket for use within a sandbox.
+
+  runner:
+    image: hashicorp/terraform:1.4.2
+    namespace: signadot
+    podTemplateOverlay: |
+      spec:
+        containers:
+        - name: main
+          env:
+          - name: TFSTATE_BUCKET
+            value: @{tfstate-bucket}
+          volumeMounts:
+          - name: aws-auth
+            mountPath: /root/.aws
+        volumes:
+        - name: aws-auth
+          secret:
+            secretName: aws-auth
+
+  create:
+  - name: provision
+    inputs:
+    - name: region
+      valueFromSandbox: true
+      as:
+        env: AWS_REGION
+
+    outputs:
+    - name: bucket-name
+      valueFromPath: /tmp/bucket-name
+
+    script: "@{embed: ./plugin/provision.sh}"
+
+  delete:
+  - name: deprovision
+    inputs:
+    - name: region
+      valueFromSandbox: true
+      as:
+        env: AWS_REGION
+    - name: bucket-name
+      valueFromStep:
+        name: provision
+        output: bucket-name
+      as:
+        env: BUCKET_NAME
+
+    script: "@{embed: ./plugin/deprovision.sh}"
