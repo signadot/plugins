@@ -2,11 +2,8 @@ name: test-postgres-vault
 spec:
   cluster: "@{cluster}"
   resources:
-  - name: pgv
-    plugin: amazon-sqs
-    params:
-      region: us-west-2
-      tags: "MyTag=value,Tag2=value"
+  - name: pgdb
+    plugin: postgres-vault
 
   defaultRouteGroup:
     endpoints:
@@ -20,8 +17,8 @@ spec:
       kind: Deployment
     customizations:
       env:
-      - name: PG_DB_NAME
+      - name: DB_NAME
         valueFrom:
           resource:
-            name: pgv
+            name: pgdb
             outputKey: provision.db-name

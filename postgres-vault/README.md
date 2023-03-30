@@ -70,6 +70,19 @@ Output Key | Description | Example
 ---------- | ----------- | -------
 `provision.db-name` | The name of the database that was created. | `signadot-postgres-k5ncuujcjllj2`
 
+[`example-sandbox.yaml`](./example-sandbox.yaml) is an example of a sandbox that uses this plugin.
+To run it, you will need to install the [`example-baseline`](./../example-baseline/) application
+in your cluster, and use `signadot` CLI to create the sandbox (replacing `<cluster-name>` with your
+cluster name, and `<example-baseline-namespace>` with the namespace where `example-baseline` was deployed):
+
+```sh
+signadot sandbox apply -f ./example-sandbox.yaml --set cluster=<cluster-name> --set namespace=<example-baseline-namespace>
+```
+
+Now, in the [Signadot Dashboard](https://app.signadot.com/sandboxes), you can follow the status of your sandbox,
+and once ready, you will be able to access the preview endpoint, where you will see the added env var:
+`DB_NAME`.
+
 ## Removing the Plugin
 
 Make sure all sandboxes that used the chart are deleted, so that the plugin gets
