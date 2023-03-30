@@ -8,12 +8,12 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: example-baseline
+      app: echo-env
   strategy: {}
   template:
     metadata:
       labels:
-        app: example-baseline
+        app: echo-env
       annotations:
         sidecar.signadot.com/inject: "http"
     spec:

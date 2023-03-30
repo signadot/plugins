@@ -17,4 +17,20 @@ spec:
       namespace: "@{namespace}"
       name: echo-env
       kind: Deployment
-
+    customizations:
+      env:
+      - name: DB_HOST
+        valueFrom:
+          resource:
+            name: mydb
+            outputKey: provision.host
+      - name: DB_PORT
+        valueFrom:
+          resource:
+            name: mydb
+            outputKey: provision.port
+      - name: DB_ROOT_PASSWORD
+        valueFrom:
+          resource:
+            name: mydb
+            outputKey: provision.root-password

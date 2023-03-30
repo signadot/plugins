@@ -35,6 +35,19 @@ Output Key | Description | Example
 `provision.port` | The port of the database | `3306`
 `provision.root-password` | The password for mariadb root access | `xxj87hd`
 
+[`example-sandbox.yaml`](./example-sandbox.yaml) is an example of a sandbox that uses this plugin.
+To run it, you will to install the [`example-baseline`](./../example-baseline/) application
+in your cluster, and use `signadot` CLI to create the sandbox (replacing `<cluster-name>` with your
+cluster name, and `<example-baseline-namespace>` with the namespace where `example-baseline` was deployed):
+
+```sh
+signadot sandbox apply -f ./example-sandbox.yaml --set cluster=<cluster-name> --set namespace=<example-baseline-namespace>
+```
+
+Now, in the [Signadot Dashboard](https://app.signadot.com/sandboxes), you can follow the status of your sandbox,
+and once ready, you will be able to access the preview endpoint, where you will see the added env vars:
+`DB_HOST`, `DB_PORT` and `DB_ROOT_PASSWORD`.
+
 
 ## Removing the Plugin
 
