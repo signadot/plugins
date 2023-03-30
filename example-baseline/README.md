@@ -3,7 +3,8 @@
 This directory contains a minimalist example baseline deployment against which
 the resource plugins can be tested. 
 
-It consists of a single Deployment which can echo environment variables.
+It consists of a single Deployment which echos environment variables.  Environment
+variables are how plugins communicate with sandboxed workloads.
 
 To install this example in your cluster, run the following command (replacing
 `<namespace>` with the corresponding value).
@@ -51,5 +52,4 @@ giving the environment of the request.  For example:
   "method": "GET",
   "requestURI": "/"
 }
-
 ```

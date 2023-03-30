@@ -1,0 +1,27 @@
+name: test-postgres-vault
+spec:
+  cluster: "@{cluster}"
+  resources:
+  - name: pgv
+    plugin: amazon-sqs
+    params:
+      region: us-west-2
+      tags: "MyTag=value,Tag2=value"
+
+  defaultRouteGroup:
+    endpoints:
+    - name: echoenv
+      target: "http://echo-env.@{namespace}.svc:8080"
+
+  forks:
+  - forkOf:
+      namespace: "@{namespace}"
+      name: echo-env
+      kind: Deployment
+    customizations:
+      env:
+      - name: PG_DB_NAME
+        valueFrom:
+          resource:
+            name: pgv
+            outputKey: provision.db-name
