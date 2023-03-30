@@ -15,7 +15,7 @@ For more information, please refer our documentation at [sandbox-resources](http
 ## Using the examples
 
 Each plugin contains usage documentation in a README.md.  You will need to have 
-[installed Signadot](https://docs.signadot.com/docs/installation).
+an active [Signadot installation](https://docs.signadot.com/docs/installation).
 
 The directory [`example-baseline`](./example-baseline/) contains a sample deployment
 that can be used to spin up sandboxes for each example.  Each example contains
