@@ -36,7 +36,7 @@ Output Key | Description | Example
 `provision.root-password` | The password for mariadb root access | `xxj87hd`
 
 [`example-sandbox.yaml`](./example-sandbox.yaml) is an example of a sandbox that uses this plugin.
-To run it, you will to install the [`example-baseline`](./../example-baseline/) application
+To run it, you will need to install the [`example-baseline`](./../example-baseline/) application
 in your cluster, and use `signadot` CLI to create the sandbox (replacing `<cluster-name>` with your
 cluster name, and `<example-baseline-namespace>` with the namespace where `example-baseline` was deployed):
 

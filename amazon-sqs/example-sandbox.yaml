@@ -1,0 +1,27 @@
+name: test-amazon-sqs
+spec:
+  cluster: "@{cluster}"
+  resources:
+  - name: mysqs
+    plugin: amazon-sqs
+    params:
+      region: us-west-2
+      tags: "MyTag=value,Tag2=value"
+
+  defaultRouteGroup:
+    endpoints:
+    - name: echoenv
+      target: "http://echo-env.@{namespace}.svc:8080"
+
+  forks:
+  - forkOf:
+      namespace: "@{namespace}"
+      name: echo-env
+      kind: Deployment
+    customizations:
+      env:
+      - name: SQS_URL
+        valueFrom:
+          resource:
+            name: mysqs
+            outputKey: provision.queue-url
