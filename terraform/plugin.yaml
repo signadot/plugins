@@ -1,8 +1,6 @@
 name: terraform
 spec:
-  description: |
-    This is a sample terraform script that provisions a temporary Amazon S3
-    bucket for use within a sandbox.
+  description: "@{embed: README.md}"
 
   runner:
     image: hashicorp/terraform:1.4.2

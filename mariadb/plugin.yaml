@@ -1,11 +1,6 @@
 name: mariadb
 spec:
-  description: |
-    Provision a MariaDB instance
-
-    Sandbox should provide input 'dbname' for the name of the database.
-    Plugin provisioner provides outputs 'host', 'port', 'root-password' for 
-    an empty database instance tied to the lifetime of the sandbox.
+  description: "@{embed: README.md}"
 
   runner:
     image: dtzar/helm-kubectl
