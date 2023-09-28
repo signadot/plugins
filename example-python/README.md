@@ -22,7 +22,7 @@ will be triggered from a new pod that is created.
 ```yaml
 name: "sandbox-test-python-plugin"
 spec:
-  description: sandbox with test workload as plugin
+  description: sandbox with python plugin
   cluster: "xyz"
   resources:
   - name: python
