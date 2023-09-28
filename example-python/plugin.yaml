@@ -1,7 +1,7 @@
 name: python-plugin
 spec:
   description: |
-    Example plugin that runs a script during create / destroy in a container
+    Example plugin that runs a python script when sandbox is created & deleted.
   runner:
     image: python:3
     namespace: signadot
