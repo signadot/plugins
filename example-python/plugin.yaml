@@ -1,0 +1,22 @@
+name: python-plugin
+spec:
+  description: |
+    Example plugin that runs a script during create / destroy in a container
+  runner:
+    image: python:3
+    namespace: signadot
+  create:
+    - name: create-something
+      script: |
+        #!/usr/bin/env python3
+        
+        # note that you can use embeds to load the script from a separate file.
+        print("creating some resources")
+
+  delete:
+    - name: delete-something
+      script: |-
+        #!/usr/bin/env python3
+        
+        # note that you can use embeds to load the script from a separate file.
+        print("deleting some resources")
