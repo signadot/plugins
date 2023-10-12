@@ -1,7 +1,6 @@
 name: postgres-vault
 spec:
-  description: |
-    Provision and seed a postgres database from a postgres service.
+  description: "@{embed: README.md}"
 
   runner:
     image: postgres
