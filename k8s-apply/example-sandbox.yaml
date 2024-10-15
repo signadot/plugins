@@ -1,0 +1,58 @@
+name: "@{name}"
+spec:
+  cluster: "@{cluster}"
+  resources:
+  - name: customObjects
+    plugin: k8s-apply
+    params:
+      data: |
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: config-@{name}
+          namespace: @{namespace}
+        data:
+          driver.properties: |
+            timeout=1s
+            maxRate=10
+        ---
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: secret-@{name}
+          namespace: @{namespace}
+        data:
+          token: dGVzdA==
+
+  forks:
+  - forkOf:
+      namespace: "@{namespace}"
+      name: echo-env
+      kind: Deployment
+    customizations:
+        patch:
+          type: strategic
+          value: |
+            spec:
+              template:
+                spec:
+                  containers:
+                  - name: echo-env
+                    env:
+                    - name: TOKEN
+                      valueFrom:
+                        secretKeyRef:
+                          name: secret-@{name}
+                          key: token
+                    volumeMounts:
+                    - name: config-volume
+                      mountPath: /etc/config
+                  volumes:
+                    - name: config-volume
+                      configMap:
+                        name: config-@{name}
+
+  defaultRouteGroup:
+    endpoints:
+    - name: echoenv
+      target: "http://echo-env.@{namespace}.svc:8080"

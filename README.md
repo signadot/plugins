@@ -6,6 +6,7 @@ This repository contains a set of example plugins for use with Signadot.
 You can take this as a base for developing your own Signadot Plugins.
 For more information, please refer our documentation at [sandbox-resources](https://docs.signadot.com/docs/sandbox-resources)
 
+- [`k8s-apply`](./k8s-apply/): A plugin to provision Kubernetes resources.
 - [`mariadb`](./mariadb/): A plugin that provisions a temporary mariadb server.
 - [`terraform`](./terraform/): A plugin that demonstrate how to use terraform to provision resources.
 - [`postgres-vault`](./postgres-vault/): A plugin integrated with [hashicorp vault](https://www.vaultproject.io/) that provisions a temporary postgres database.
