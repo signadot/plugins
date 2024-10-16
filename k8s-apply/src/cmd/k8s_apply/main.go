@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/signadot/plugins/k8s-apply/src/pkg/k8sapplier"
 	"github.com/signadot/plugins/k8s-apply/src/pkg/resources"
@@ -17,6 +18,7 @@ import (
 
 func main() {
 	inputPath := flag.String("file", "", "input file")
+	timeout := flag.Duration("timeout", time.Minute, "timeout value for the operation")
 	flag.Parse()
 
 	// read the input file
@@ -47,7 +49,8 @@ func main() {
 		panic(err.Error())
 	}
 
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(context.Background(), *timeout)
+	defer cancel()
 
 	// get required env vars
 	routinKey := os.Getenv("SIGNADOT_SANDBOX_ROUTING_KEY")

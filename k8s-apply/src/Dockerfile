@@ -1,10 +1,12 @@
-FROM golang:1.23 as builder
+FROM --platform=$BUILDPLATFORM golang:1.23 AS builder
+ARG TARGETOS
+ARG TARGETARCH
 
 WORKDIR /app
 COPY go.* ./
 RUN go mod download
 COPY . ./
-RUN go build ./cmd/k8s_apply
+RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build ./cmd/k8s_apply
 
 
 FROM ubuntu

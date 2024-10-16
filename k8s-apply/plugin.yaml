@@ -12,7 +12,7 @@ spec:
     desired Kubernetes resources in YAML format.
 
   runner:
-    image: signadot/k8s-apply:latest
+    image: signadot/k8s-apply:v1.0.0
     namespace: signadot
     podTemplateOverlay: |
       spec:
