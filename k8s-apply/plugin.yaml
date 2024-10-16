@@ -1,0 +1,31 @@
+name: k8s-apply
+spec:
+  description: |
+    Provision Kubernetes resources
+
+    This plugin provisions Kubernetes resources. Such resources will be created
+    with owner references set to the corresponding sandbox resource CRD, and so
+    the deprovision will be performed directly by Kubernetes during sandbox
+    deletion.
+
+    Each sandbox resource request must specify a 'data' parameter, with the
+    desired Kubernetes resources in YAML format.
+
+  runner:
+    image: signadot/k8s-apply:v1.0.0
+    namespace: signadot
+    podTemplateOverlay: |
+      spec:
+        serviceAccountName: signadot-controller-manager
+
+  create:
+    - name: provision
+      inputs:
+        - name: data
+          valueFromSandbox: true
+          as:
+            path: /tmp/input.yaml
+      script: |
+        #!/bin/bash
+        set -e
+        k8s_apply -file /tmp/input.yaml
