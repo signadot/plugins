@@ -19,7 +19,9 @@ helm -n ${NAMESPACE} install "${RELEASE_NAME}" bitnami/mariadb \
 --set fullnameOverride="${RELEASE_NAME}-mariadb" \
 --set primary.persistence.enabled=false \
 --set serviceAccount.create=false \
---set auth.database="${DBNAME}"
+--set auth.database="${DBNAME}" \
+--set global.imageRegistry=docker.io \
+--set global.repository=bitnamilegacy
 
 # Get the generated password, based on instructions from the Helm chart.
 MYSQL_ROOT_PASSWORD=$(kubectl -n ${NAMESPACE} get secret "${RELEASE_NAME}-mariadb" -o jsonpath="{.data.mariadb-root-password}" | base64 -d)
