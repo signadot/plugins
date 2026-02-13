@@ -1,0 +1,92 @@
+name: dolt-branch
+spec:
+  description: |
+    Provision an isolated Dolt database branch for sandbox testing.
+
+    Creates a new branch on an existing Dolt SQL server and sets it as the
+    default branch for the database. When the sandbox is deleted, the branch
+    is force-deleted and the default branch is reset.
+
+    All connection details are passed as sandbox parameters, so the same plugin
+    can target different Dolt servers, databases, and base branches.
+
+    Required sandbox params: dbname, dolt-host, dolt-port, secret-name, base-branch
+    Plugin outputs: branch-name, db-name, db-host, db-port
+
+  runner:
+    image: debian:bookworm-slim
+    # Set this to the namespace where Dolt is deployed.
+    # The runner pod must be in the same namespace to resolve
+    # the Dolt Service via Kubernetes DNS and access the Secret.
+    namespace: CHANGE_ME
+    podTemplateOverlay: |
+      spec:
+        serviceAccountName: sd-dolt-branch
+
+  create:
+    - name: createbranch
+      inputs:
+        - name: dbname
+          valueFromSandbox: true
+          as:
+            env: DOLT_DATABASE
+        - name: dolt-host
+          valueFromSandbox: true
+          as:
+            env: DOLT_HOST
+        - name: dolt-port
+          valueFromSandbox: true
+          as:
+            env: DOLT_PORT
+        - name: secret-name
+          valueFromSandbox: true
+          as:
+            env: SECRET_NAME
+        - name: base-branch
+          valueFromSandbox: true
+          as:
+            env: BASE_BRANCH
+
+      outputs:
+        - name: branch-name
+          valueFromPath: /outputs/branch-name
+        - name: db-name
+          valueFromPath: /outputs/db-name
+        - name: db-host
+          valueFromPath: /outputs/db-host
+        - name: db-port
+          valueFromPath: /outputs/db-port
+
+      script: "@{embed: ./plugin/create-branch.sh}"
+
+  delete:
+    - name: deletebranch
+      inputs:
+        - name: dbname
+          valueFromSandbox: true
+          as:
+            env: DOLT_DATABASE
+        - name: dolt-host
+          valueFromSandbox: true
+          as:
+            env: DOLT_HOST
+        - name: dolt-port
+          valueFromSandbox: true
+          as:
+            env: DOLT_PORT
+        - name: secret-name
+          valueFromSandbox: true
+          as:
+            env: SECRET_NAME
+        - name: base-branch
+          valueFromSandbox: true
+          as:
+            env: BASE_BRANCH
+        - name: branch-name
+          valueFromStep:
+            name: createbranch
+            output: branch-name
+          as:
+            env: BRANCH_NAME
+
+      script: "@{embed: ./plugin/delete-branch.sh}"

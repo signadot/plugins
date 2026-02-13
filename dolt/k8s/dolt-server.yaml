@@ -1,0 +1,104 @@
+# Deploys a Dolt SQL server.
+# Dolt is MySQL-compatible and supports Git-style branching via SQL stored procedures.
+#
+# Before applying, replace CHANGE_ME with the namespace where you want
+# to deploy Dolt, and create the credentials Secret in that namespace.
+#
+# Reference: https://docs.dolthub.com/introduction/installation/docker
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dolt-data
+  namespace: CHANGE_ME
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dolt-db
+  namespace: CHANGE_ME
+  labels:
+    app: dolt-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dolt-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dolt-db
+    spec:
+      containers:
+        - name: dolt
+          image: dolthub/dolt-sql-server:latest
+          ports:
+            - containerPort: 3306
+              name: mysql
+          env:
+            - name: DOLT_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dolt-credentials
+                  key: password
+            - name: DOLT_ROOT_HOST
+              value: "%"
+          volumeMounts:
+            - name: dolt-data
+              mountPath: /var/lib/dolt
+            - name: init-scripts
+              mountPath: /docker-entrypoint-initdb.d
+          livenessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - dolt --host 127.0.0.1 --port 3306 --no-tls -u root -p"$DOLT_ROOT_PASSWORD" sql -q "SELECT 1;"
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - dolt --host 127.0.0.1 --port 3306 --no-tls -u root -p"$DOLT_ROOT_PASSWORD" sql -q "SELECT 1;"
+            initialDelaySeconds: 40
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      volumes:
+        - name: dolt-data
+          persistentVolumeClaim:
+            claimName: dolt-data
+        - name: init-scripts
+          configMap:
+            name: dolt-init-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dolt-db
+  namespace: CHANGE_ME
+  labels:
+    app: dolt-db
+spec:
+  type: ClusterIP
+  selector:
+    app: dolt-db
+  ports:
+    - port: 3306
+      targetPort: 3306
+      protocol: TCP
+      name: mysql

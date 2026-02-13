@@ -1,0 +1,37 @@
+# Service account and RBAC for the dolt-branch plugin runner.
+# The runner pod needs permission to read the Dolt credentials Secret.
+#
+# Install this BEFORE registering the plugin:
+#   kubectl apply -f ./k8s/dolt-rbac.yaml
+#
+# Update the namespace to match your Dolt deployment.
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sd-dolt-branch
+  namespace: CHANGE_ME
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sd-dolt-branch
+  namespace: CHANGE_ME
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sd-dolt-branch
+  namespace: CHANGE_ME
+subjects:
+  - kind: ServiceAccount
+    name: sd-dolt-branch
+    namespace: CHANGE_ME
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sd-dolt-branch

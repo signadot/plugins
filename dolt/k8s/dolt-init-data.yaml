@@ -1,0 +1,33 @@
+# Seeds the Dolt database with example data on first startup.
+# Customize the SQL to match your application schema.
+#
+# Before applying, replace CHANGE_ME with your target namespace.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dolt-init-data
+  namespace: CHANGE_ME
+data:
+  init-data.sql: |
+    CREATE DATABASE IF NOT EXISTS location;
+    USE location;
+
+    CREATE TABLE IF NOT EXISTS locations (
+        id         INT PRIMARY KEY,
+        name       VARCHAR(255) NOT NULL,
+        lat        DOUBLE NOT NULL,
+        lng        DOUBLE NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    INSERT INTO locations (id, name, lat, lng) VALUES
+        (1, 'Headquarters',   37.7749, -122.4194),
+        (2, 'Branch Office',  37.7833, -122.4167),
+        (3, 'Warehouse',      37.7855, -122.4010),
+        (4, 'Distribution',   37.7694, -122.4862);
+
+    -- Commit seed data into Dolt version history.
+    -- Without this, branches will not inherit the data.
+    CALL DOLT_ADD('.');
+    CALL DOLT_COMMIT('-m', 'Seed location data');
