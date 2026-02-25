@@ -1,42 +1,30 @@
-name: test-dolt-branch
+name: dolt-sandbox-demo
 spec:
   cluster: "@{cluster}"
-  description: "Sandbox with isolated Dolt database branch"
+  description: "Location service with isolated Dolt database branch"
 
   resources:
     - name: doltdb
       plugin: dolt-branch
       params:
-        dbname: "@{dbname}"
-        dolt-host: "@{dolt-host}"
-        dolt-port: "@{dolt-port}"
-        secret-name: "@{secret-name}"
-        base-branch: "@{base-branch}"
-
-  defaultRouteGroup:
-    endpoints:
-      - name: location-service
-        target: "http://location.@{namespace}.svc:8081"
+        dbname: location
+        base-branch: main
 
   forks:
     - forkOf:
-        namespace: "@{namespace}"
-        name: location
         kind: Deployment
+        namespace: default
+        name: location-service
       customizations:
         env:
-          - name: MYSQL_HOST
-            valueFrom:
-              resource:
-                name: doltdb
-                outputKey: createbranch.db-host
-          - name: MYSQL_PORT
-            valueFrom:
-              resource:
-                name: doltdb
-                outputKey: createbranch.db-port
           - name: MYSQL_DBNAME
+            container: location
             valueFrom:
               resource:
                 name: doltdb
                 outputKey: createbranch.db-name
+
+  defaultRouteGroup:
+    endpoints:
+      - name: location-api
+        target: "http://location-service.default.svc:3000"
