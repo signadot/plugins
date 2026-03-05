@@ -1,0 +1,68 @@
+name: dolt-branch
+spec:
+  description: >
+    Creates and deletes Dolt database branches for sandbox isolation.
+    Each sandbox gets its own branch, so writes on one branch do not
+    affect other sandboxes or the baseline.
+
+    Sandbox params: dbname (Dolt database name), base-branch (parent branch).
+    Plugin outputs: branch-name, db-name (database/branchname format).
+
+  runner:
+    image: debian:bookworm-slim
+    # Set this to the namespace where the Dolt credentials Secret exists.
+    # The runner pod must be in the same namespace to access the Secret.
+    namespace: CHANGE_ME
+
+    podTemplateOverlay: |
+      spec:
+        containers:
+          - name: main
+            env:
+              - name: DOLT_HOST
+                value: "dolt-db.default.svc"
+              - name: DOLT_PORT
+                value: "3306"
+              - name: DOLT_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: dolt-credentials
+                    key: username
+              - name: DOLT_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: dolt-credentials
+                    key: password
+
+  create:
+    - name: createbranch
+      inputs:
+        - name: dbname
+          valueFromSandbox: true
+          as:
+            env: DOLT_DATABASE
+        - name: base-branch
+          valueFromSandbox: true
+          as:
+            env: BASE_BRANCH
+      script: "@{embed: ./plugin/create-branch.sh}"
+      outputs:
+        - name: branch-name
+          valueFromPath: /outputs/branch-name
+        - name: db-name
+          valueFromPath: /outputs/db-name
+
+  delete:
+    - name: deletebranch
+      inputs:
+        - name: dbname
+          valueFromSandbox: true
+          as:
+            env: DOLT_DATABASE
+        - name: branch-name
+          valueFromStep:
+            name: createbranch
+            output: branch-name
+          as:
+            env: BRANCH_NAME
+      script: "@{embed: ./plugin/delete-branch.sh}"
