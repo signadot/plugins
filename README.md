@@ -11,6 +11,7 @@ For more information, please refer our documentation at [sandbox-resources](http
 - [`terraform`](./terraform/): A plugin that demonstrate how to use terraform to provision resources.
 - [`postgres-vault`](./postgres-vault/): A plugin integrated with [hashicorp vault](https://www.vaultproject.io/) that provisions a temporary postgres database.
 - [`amazon-sqs`](./amazon-sqs/): A plugin that provisions temporary queues in Amazon SQS.
+- [`clickhouse`](./clickhouse/): A plugin that gives each sandbox a zero-copy branch of a ClickHouse database, by hard-linking its partitions.
 - [`example-python`](./example-python/): An example plugin that runs arbitrary Python code during the creation and deletion of a sandbox.
 
 ## Using the examples

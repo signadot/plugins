@@ -1,0 +1,29 @@
+name: test-clickhouse-branch
+spec:
+  cluster: "@{cluster}"
+  description: "echo-env with its own branch of a ClickHouse database"
+
+  resources:
+  - name: chdb
+    plugin: clickhouse-branch
+    params:
+      database: "@{database}"
+      partitions: "all"
+
+  defaultRouteGroup:
+    endpoints:
+    - name: echoenv
+      target: "http://echo-env.@{namespace}.svc:8080"
+
+  forks:
+  - forkOf:
+      namespace: "@{namespace}"
+      name: echo-env
+      kind: Deployment
+    customizations:
+      env:
+      - name: CLICKHOUSE_DATABASE
+        valueFrom:
+          resource:
+            name: chdb
+            outputKey: createbranch.database

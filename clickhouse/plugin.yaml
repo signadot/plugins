@@ -1,0 +1,66 @@
+name: clickhouse-branch
+spec:
+  description: >
+    Branches a ClickHouse database for each sandbox. The branch is a new database
+    on the same server whose MergeTree tables are hard-linked to the source's
+    partitions, so it is ready in seconds without copying data, and writes,
+    mutations and schema changes in the branch never touch the source.
+
+    Sandbox params: database (source database), partitions (optional: "all",
+    the default, or how many of each table's newest partitions to attach).
+    Plugin outputs: database (the branch's database name).
+
+  runner:
+    image: curlimages/curl:8.23.0
+    # Set this to the namespace where the ClickHouse credentials Secret exists.
+    # The runner pod must be in the same namespace to access the Secret.
+    namespace: signadot
+
+    podTemplateOverlay: |
+      spec:
+        containers:
+          - name: main
+            # Signadot writes each step's script into a root-owned volume, and
+            # this image runs as a non-root user by default.
+            securityContext:
+              runAsUser: 0
+            env:
+              - name: CLICKHOUSE_URL
+                value: "http://clickhouse.default.svc:8123"
+              - name: CLICKHOUSE_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: clickhouse-credentials
+                    key: username
+              - name: CLICKHOUSE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: clickhouse-credentials
+                    key: password
+
+  create:
+    - name: createbranch
+      inputs:
+        - name: database
+          valueFromSandbox: true
+          as:
+            env: SOURCE_DATABASE
+        - name: partitions
+          valueFromSandbox: true
+          as:
+            env: PARTITIONS
+      script: "@{embed: ./plugin/create-branch.sh}"
+      outputs:
+        - name: database
+          valueFromPath: /outputs/database
+
+  delete:
+    - name: deletebranch
+      inputs:
+        - name: database
+          valueFromStep:
+            name: createbranch
+            output: database
+          as:
+            env: BRANCH_DATABASE
+      script: "@{embed: ./plugin/delete-branch.sh}"
