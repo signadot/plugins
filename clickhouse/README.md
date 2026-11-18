@@ -14,7 +14,8 @@ agent.
 
 When a sandbox is created, the plugin connects to ClickHouse's HTTP interface and:
 
-1. Creates a database named `<database>_<sandbox name>` on the same server.
+1. Creates a database named `<database>_<sandbox name>` on the same server, with the comment
+   `Signadot sandbox branch`.
 2. Copies each MergeTree-family table's schema with `CREATE TABLE ... AS`, then attaches the
    table's newest partitions with `ALTER TABLE ... ATTACH PARTITION ID ... FROM`. On the same
    disk, ClickHouse attaches a partition by hard-linking its part files.
@@ -31,12 +32,16 @@ the branch shares with the source never change.
 When the sandbox is deleted, the plugin drops the branch database. That removes only the
 branch's links: the source keeps all of its data.
 
+The plugin only replaces or drops databases that carry the `Signadot sandbox branch` comment. If
+a database without it already has the branch's name, the create step fails and leaves it alone.
+It also rejects a `database` or `partitions` value that isn't a plain identifier or number.
+
 ## Prerequisites
 
 - A ClickHouse server that the cluster can reach over HTTP (port `8123` by default). The plugin
   was tested with ClickHouse 26.8.
-- A ClickHouse user that can create and drop databases, and read `system.tables` and
-  `system.parts`.
+- A ClickHouse user that can create and drop databases, and read `system.databases`,
+  `system.tables` and `system.parts`. Give the plugin its own user rather than an admin one.
 - A Kubernetes Secret named `clickhouse-credentials`, with the keys `username` and `password`,
   in the namespace the plugin runs in (`signadot` by default):
 

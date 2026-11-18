@@ -15,6 +15,18 @@ BRANCH="${SOURCE_DATABASE}_$(echo "$SIGNADOT_SANDBOX_NAME" | tr - _)"
 PARTITIONS="${PARTITIONS:-all}"
 LIMIT="LIMIT $PARTITIONS"; [ "$PARTITIONS" = all ] && LIMIT=""
 
+# Only a plain identifier and a number reach the SQL below.
+echo "$BRANCH" | grep -qE '^[A-Za-z_][A-Za-z0-9_]*$' || {
+  echo "Invalid database name: '$SOURCE_DATABASE'" >&2; exit 1; }
+echo "$PARTITIONS" | grep -qE '^(all|[0-9]+)$' || {
+  echo "Invalid partitions: '$PARTITIONS' (use \"all\" or a number)" >&2; exit 1; }
+
+# Each branch carries this comment. Never replace or drop a database without
+# it: one that only happens to share the branch's name is not ours.
+MARK="Signadot sandbox branch"
+[ "$(ch "SELECT count() FROM system.databases WHERE name = '$BRANCH' AND comment != '$MARK'")" = 0 ] || {
+  echo "Database '$BRANCH' exists and is not a sandbox branch; leaving it alone" >&2; exit 1; }
+
 # If anything below fails, drop the partial branch, so that it never outlives
 # a sandbox whose resource failed.
 trap 'ch "DROP DATABASE IF EXISTS $BRANCH SYNC" || true' EXIT
@@ -22,7 +34,7 @@ trap 'ch "DROP DATABASE IF EXISTS $BRANCH SYNC" || true' EXIT
 # 1. Start from an empty database, so that a retried step never attaches the
 #    same parts twice.
 ch "DROP DATABASE IF EXISTS $BRANCH SYNC"
-ch "CREATE DATABASE $BRANCH"
+ch "CREATE DATABASE $BRANCH COMMENT '$MARK'"
 
 # 2. Copy each MergeTree table's schema, then attach its newest partitions.
 #    ATTACH PARTITION ... FROM hard-links the source's parts, so no data is
